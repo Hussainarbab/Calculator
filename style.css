@@ -54,5 +54,15 @@ button:active{
 }
 
 .btn{
-    background-color: aqua;
+    background-color: rgb(58, 110, 110);
+}
+.btn:hover{
+    background-color: rgb(130, 158, 158);
+
+}
+
+.btn:active{
+    background-color: rgb(160, 253, 253);
+    color: black;
+
 }
