@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Safe Calculator</title>
+  <style>
+    #calculator { width: 200px; margin: 30px auto; }
+    input { width: 100%; padding: 10px; font-size: 18px; }
+    button { width: 25%; padding: 10px; font-size: 18px; margin: 2px; }
+  </style>
+</head>
+<body>
+  <div id="calculator">
+    <input id="display" readonly>
+    <div>
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button onclick="append('+')">+</button>
+    </div>
+    <div>
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button onclick="append('-')">-</button>
+    </div>
+    <div>
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button onclick="append('*')">*</button>
+    </div>
+    <div>
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="append('0')">0</button>
+      <button onclick="calculate()">=</button>
+      <button onclick="append('/')">/</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+
+    function append(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = "";
+    }
+
+    function calculate() {
+      try {
+        display.value = evaluateExpression(display.value);
+      } catch (error) {
+        display.value = "Error";
+      }
+    }
+
+    function evaluateExpression(expr) {
+      // Convert infix to postfix using shunting-yard algorithm
+      const output = [];
+      const operators = [];
+      const precedence = { '+': 1, '-': 1, '*': 2, '/': 2 };
+
+      let number = '';
+      for (let i = 0; i < expr.length; i++) {
+        const char = expr[i];
+
+        if (!isNaN(char) || char === '.') {
+          number += char;
+        } else if (char in precedence) {
+          if (number) {
+            output.push(parseFloat(number));
+            number = '';
+          }
+          while (
+            operators.length &&
+            precedence[char] <= precedence[operators[operators.length - 1]]
+          ) {
+            output.push(operators.pop());
+          }
+          operators.push(char);
+        }
+      }
+
+      if (number) output.push(parseFloat(number));
+      while (operators.length) output.push(operators.pop());
+
+      // Evaluate postfix
+      const stack = [];
+      for (const token of output) {
+        if (typeof token === 'number') {
+          stack.push(token);
+        } else {
+          const b = stack.pop();
+          const a = stack.pop();
+          if (token === '+') stack.push(a + b);
+          if (token === '-') stack.push(a - b);
+          if (token === '*') stack.push(a * b);
+          if (token === '/') stack.push(a / b);
+        }
+      }
+
+      return stack[0];
+    }
+  </script>
+</body>
+</html>

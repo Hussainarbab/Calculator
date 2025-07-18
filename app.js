@@ -1,11 +1,9 @@
 const display =document.getElementById("display");
-
-
 function appendToDisplay(input){
 display.value += input;
 
 }
-
+// clear fun 
 
 function clearDisplay(){
 
@@ -14,7 +12,7 @@ function clearDisplay(){
 }
 
 
-
+// error message 
 function calculate(){
 try{
 display.value = eval(display.value);
@@ -25,22 +23,23 @@ display.value = eval(display.value);
 }
 
 }
+// delete fun 
 
 function deleteLast() {
   display.value = display.value.slice(0, -1);
 }
 
 
-
+// toogle buttun
 function changeBackground() {
   const calculator = document.getElementById("calculator");
 
-  // Toggle between two background colors
+
   if (calculator.style.backgroundColor === "lightblue") {
-    calculator.style.backgroundColor = "#333";  // Dark theme
+    calculator.style.backgroundColor = "#333";  
     calculator.style.color = "#fff";
   } else {
-    calculator.style.backgroundColor = "lightblue"; // Light theme
+    calculator.style.backgroundColor = "lightblue"; 
     calculator.style.color = "#000";
   }
 }
